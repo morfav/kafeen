@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/front-end/front-end.iml" filepath="$PROJECT_DIR$/front-end/front-end.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/kafeen.iml" filepath="$PROJECT_DIR$/.idea/kafeen.iml" />
+      <module fileurl="file://$PROJECT_DIR$/kafeen-server/kafeen-server.iml" filepath="$PROJECT_DIR$/kafeen-server/kafeen-server.iml" />
+    </modules>
+  </component>
+</project>
