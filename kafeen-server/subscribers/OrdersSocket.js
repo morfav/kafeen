@@ -1,8 +1,13 @@
 const WebSocket = require('ws');
+const { Order, ordersEmitter } = require('../models/order');
+
+ordersEmitter.on('ordersChanged', async () => {
+  const orders = await Order.find().exec();
+  sendOrders(JSON.stringify(orders));
+});
 
 const ws = new WebSocket.Server({ noServer: true });
 
-let ordersWs;
 function onUpgrade (request, socket, head) {
   // console.log(request.url);
   // const pathname = new url.URL(request.url).pathname;
@@ -10,7 +15,6 @@ function onUpgrade (request, socket, head) {
   if (request.url === '/orders') {
     ws.handleUpgrade(request, socket, head, function done (activeWs) {
       activeWs.emit('connection', ws, request);
-      ordersWs = activeWs;
     });
   } else {
     socket.destroy();
@@ -18,7 +22,6 @@ function onUpgrade (request, socket, head) {
 }
 
 const sendOrders = (data) => {
-  // ordersWs.send(data);
   ws.clients.forEach(function each(client) {
     if (client.readyState === WebSocket.OPEN) {
       client.send(data);
@@ -26,4 +29,4 @@ const sendOrders = (data) => {
   });
 };
 
-module.exports = { sendOrders, onUpgrade };
+exports.onUpgrade = onUpgrade;

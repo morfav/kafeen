@@ -2,9 +2,50 @@ import React, {useEffect, useRef, useState} from 'react';
 import Button from '@material-ui/core/Button';
 
 const Orders = () => {
-  const [orderId, setOrderId] = useState(0);
   const [orders, setOrders] = useState([]);
+  const [customer, setCustomer] = useState({});
+  const [drinks, setDrinks] = useState({});
+  const [cafe, setCafe] = useState("");
   const ws = useRef(null);
+
+  useEffect(() => {
+    const getData = async () => {
+      const data = await fetch('http://localhost:8080/customers');
+      const res = await data.json();
+      setCustomer(res);
+    }
+    getData().catch(err => console.log(err));
+  }, []);
+
+  useEffect(() => {
+    const getData = async () => {
+      const data = await fetch('http://localhost:8080/orders');
+      const res = await data.json();
+      setOrders(res);
+    }
+    getData().catch(err => console.log(err));
+  }, []);
+
+  useEffect(() => {
+    const getData = async () => {
+      const data = await fetch('http://localhost:8080/cafes');
+      const res = await data.json();
+      setCafe(res);
+    }
+    getData().catch(err => console.log(err));
+  }, []);
+
+  useEffect(() => {
+    const getData = async () => {
+      const data = await fetch('http://localhost:8080/drinks');
+      const res = await data.json();
+      setDrinks(
+        res.reduce(
+          (accumulator, currentValue) =>
+            Object.assign(accumulator, { [currentValue._id]: currentValue.name }), {}));
+    }
+    getData().catch(err => console.log(err));
+  }, []);
 
   useEffect(() => {
     ws.current = new WebSocket("ws://localhost:8080/orders");
@@ -12,7 +53,6 @@ const Orders = () => {
     ws.current.onclose = () => console.log("ws closed");
     ws.current.onmessage = e => {
       const message = JSON.parse(e.data);
-      // console.log(e.data);
       setOrders(message);
     };
 
@@ -21,24 +61,33 @@ const Orders = () => {
     };
   }, []);
 
-  const placeOrder = () => {
+  const placeOrder = (drinkId) => {
     const requestOptions = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({id: orderId})
+      body: JSON.stringify({
+        customer: customer._id,
+        drinks: [drinkId],
+        cafe: cafe._id,
+      })
     };
     fetch('http://localhost:8080/orders', requestOptions)
-    setOrderId(orderId + 1);
   }
 
   return (
     <>
-      <Button
-        onClick={() => placeOrder()}
-      >
-        Order
-      </Button>
-      {orders.map(order => <span key={order}>{order} </span>)}
+      <div>{cafe.name}</div>
+      {drinks
+      && Object.keys(drinks).map(id =>
+        (<Button
+          onClick={() => placeOrder(id)}
+          key={id}
+        >
+          {drinks[id]}
+        </Button>))}
+      {orders.map(order =>
+        order.drinks.map((drink, i) =>
+          <div key={order._id + `${i}`}>{drinks[drink]}</div>))}
     </>
   )
 }
