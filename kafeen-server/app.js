@@ -4,6 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 const logger = require('./config/winston')(__filename);
+const { stream } = require('./config/stream');
 const mongoose = require('mongoose');
 
 const ordersRouter = require('./routes/orders');
@@ -24,7 +25,7 @@ mongoose.connection.on('error', err => logger.error('MongoDB connection error: '
 
 app.use(cors());
 app.options('*', cors());
-app.use(morgan('combined', { stream: logger.stream }));
+app.use(morgan('combined', { stream }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
