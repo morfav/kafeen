@@ -3,7 +3,7 @@ const cors = require('cors');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
-const logger = require('./config/winston');
+const logger = require('./config/winston')(__filename);
 const mongoose = require('mongoose');
 
 const ordersRouter = require('./routes/orders');
