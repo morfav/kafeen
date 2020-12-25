@@ -6,16 +6,14 @@ const options = {
     level: 'info',
     filename: './logs/app.log',
     handleExceptions: true,
-    json: true,
+    format: winston.format.json(),
     maxsize: 5242880, // 5MB
     maxFiles: 5,
-    colorize: false
   },
   console: {
     level: 'debug',
     handleExceptions: true,
-    json: false,
-    colorize: true
+    format: winston.format.prettyPrint(),
   }
 };
 
@@ -27,12 +25,6 @@ const logger = winston.createLogger({
   ],
   exitOnError: false // do not exit on handled exceptions
 });
-
-if (process.env.NODE_ENV !== 'production') {
-  logger.add(new winston.transports.Console({
-    format: winston.format.simple()
-  }));
-}
 
 // create a stream object with a 'write' function that will be used by `morgan`
 logger.stream = {
