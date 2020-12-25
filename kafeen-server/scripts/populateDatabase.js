@@ -49,4 +49,4 @@ const populateData = async () => {
   await db.close();
 };
 
-populateData().catch(err => console.log(err));
+populateData().catch(err => console.error(err));
