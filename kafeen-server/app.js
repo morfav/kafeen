@@ -1,13 +1,14 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
-const logger = require('./config/winston')(__filename);
-const { stream } = require('./config/stream');
-const mongoose = require('mongoose');
+const logger = require('./logger/winston')(__filename);
+const { stream } = require('./logger/stream');
+const launchBarista = require('./orders/BaristaSimulator');
 
-const ordersRouter = require('./routes/orders');
+const ordersRouter = require('./orders/order.routes');
 const customersRouter = require('./routes/customers');
 const drinksRouter = require('./routes/drinks');
 const cafesRouter = require('./routes/cafe.routes');
@@ -42,5 +43,9 @@ app.use((req, res, next) => {
     error: 'Not found'
   });
 });
+
+if (process.env.NODE_ENV !== 'production') {
+  launchBarista();
+}
 
 module.exports = app;

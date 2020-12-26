@@ -1,5 +1,5 @@
 const WebSocket = require('ws');
-const { Order, ordersEmitter } = require('../models/order');
+const { Order, ordersEmitter } = require('./order.model');
 
 ordersEmitter.on('ordersChanged', async () => {
   const orders = await Order.find().exec();

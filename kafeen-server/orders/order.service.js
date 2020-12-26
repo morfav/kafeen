@@ -1,5 +1,5 @@
-const { Order } = require('../models/order');
-const logger = require('../config/winston')(__filename);
+const { Order } = require('./order.model');
+const logger = require('../logger/winston')(__filename);
 
 exports.placeOrder = (cafeId, customerId, drinks) => {
   const order = new Order({ cafe: cafeId, customer: customerId, drinks });

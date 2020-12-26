@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const service = require('../services/orders.service');
+const service = require('./order.service');
 
 router.get('/', async (req, res, next) => {
   res.send(JSON.stringify(await service.findAll()));

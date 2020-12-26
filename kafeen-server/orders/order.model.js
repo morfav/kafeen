@@ -14,7 +14,7 @@ const OrderSchema = new Schema(
 class OrdersEmitter extends EventEmitter {}
 const ordersEmitter = new OrdersEmitter();
 
-OrderSchema.post('save', (doc, next) => {
+OrderSchema.post(/save|delete/, (doc, next) => {
   ordersEmitter.emit('ordersChanged');
   next();
 });

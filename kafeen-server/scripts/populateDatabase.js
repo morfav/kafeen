@@ -8,7 +8,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 const Drink = require('../models/drink');
 const Cafe = require('../models/cafe');
 const Customer = require('../models/customer');
-const { Order } = require('../models/order');
+const { Order } = require('../orders/order.model');
 
 const deleteAllData = async () => {
   await Drink.deleteMany().catch(err => console.log(err));

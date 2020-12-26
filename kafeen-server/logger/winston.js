@@ -1,4 +1,4 @@
-const { logger } = require('stream');
+const { logger } = require('./stream');
 
 module.exports = function (fileName) {
   return {
