@@ -12,6 +12,8 @@ const prepareNextCoffee = async () => {
   if (nextOrder) {
     await Order.deleteOne({ _id: nextOrder._id }).exec();
     logger.info('Order served: ' + nextOrder);
+  } else {
+    logger.info('No orders to serve');
   }
 };
 
