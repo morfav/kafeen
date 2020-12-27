@@ -11,7 +11,7 @@ const launchBarista = require('./orders/BaristaSimulator');
 const ordersRouter = require('./orders/order.routes');
 const customersRouter = require('./routes/customers');
 const drinksRouter = require('./routes/drinks');
-const cafesRouter = require('./routes/cafe.routes');
+const cafesRouter = require('./cafes/cafes.routes');
 
 const app = express();
 

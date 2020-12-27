@@ -1,12 +1,14 @@
 import React, {useEffect, useRef, useState} from 'react';
+import {useLocation} from "react-router-dom";
 import Button from '@material-ui/core/Button';
 
-const Orders = () => {
+const Cafe = () => {
   const [orders, setOrders] = useState([]);
   const [customer, setCustomer] = useState({});
   const [drinks, setDrinks] = useState({});
   const [cafe, setCafe] = useState("");
   const ws = useRef(null);
+  const location = useLocation();
 
   useEffect(() => {
     const getData = async () => {
@@ -28,7 +30,7 @@ const Orders = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const data = await fetch('http://localhost:8080/cafes');
+      const data = await fetch(`http://localhost:8080${location.pathname}`);
       const res = await data.json();
       setCafe(res);
     }
@@ -92,4 +94,4 @@ const Orders = () => {
   )
 }
 
-export default Orders;
+export default Cafe;
