@@ -1,6 +1,15 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {useLocation} from "react-router-dom";
 import Button from '@material-ui/core/Button';
+import {makeStyles} from "@material-ui/core";
+import Container from "@material-ui/core/Container";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: theme.spacing(1),
+    textAlign: 'center',
+  },
+}));
 
 const Cafe = () => {
   const [orders, setOrders] = useState([]);
@@ -9,6 +18,7 @@ const Cafe = () => {
   const [cafe, setCafe] = useState("");
   const ws = useRef(null);
   const location = useLocation();
+  const classes = useStyles();
 
   useEffect(() => {
     const getData = async () => {
@@ -35,7 +45,7 @@ const Cafe = () => {
       setCafe(res);
     }
     getData().catch(err => console.log(err));
-  }, []);
+  }, [location.pathname]);
 
   useEffect(() => {
     const getData = async () => {
@@ -44,7 +54,7 @@ const Cafe = () => {
       setDrinks(
         res.reduce(
           (accumulator, currentValue) =>
-            Object.assign(accumulator, { [currentValue._id]: currentValue.name }), {}));
+            Object.assign(accumulator, {[currentValue._id]: currentValue.name}), {}));
     }
     getData().catch(err => console.log(err));
   }, []);
@@ -73,12 +83,12 @@ const Cafe = () => {
         cafe: cafe._id,
       })
     };
-    fetch('http://localhost:8080/orders', requestOptions)
+    fetch('http://localhost:8080/orders', requestOptions).catch(err => console.log(err));
   }
 
   return (
-    <>
-      <div>{cafe.name}</div>
+    <Container className={classes.root} maxWidth="sm">
+      <h2>{cafe.name}</h2>
       {drinks
       && Object.keys(drinks).map(id =>
         (<Button
@@ -90,7 +100,7 @@ const Cafe = () => {
       {orders.map(order =>
         order.drinks.map((drink, i) =>
           <div key={order._id + `${i}`}>{drinks[drink]}</div>))}
-    </>
+    </Container>
   )
 }
 

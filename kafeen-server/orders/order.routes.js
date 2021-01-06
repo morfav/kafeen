@@ -6,9 +6,10 @@ router.get('/', async (req, res, next) => {
   res.send(JSON.stringify(await service.findAll()));
 });
 
-router.post('/', (req, res, next) => {
+router.post('/', async (req, res, next) => {
   const body = req.body;
-  service.placeOrder(body.cafe, body.customer, body.drinks);
+  await service.placeOrder(body.cafe, body.customer, body.drinks);
+  res.sendStatus(201);
 });
 
 module.exports = router;

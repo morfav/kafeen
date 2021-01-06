@@ -40,7 +40,7 @@ app.use((req, res, next) => {
   logger.error(req.path);
   res.status(404).send({
     status: 404,
-    error: 'Not found'
+    error: 'Not found',
   });
 });
 
